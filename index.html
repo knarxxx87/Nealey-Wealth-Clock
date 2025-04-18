@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nealey Wealth Clock</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background: #0f172a;
+      color: #22c55e;
+      text-align: center;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    #wealth {
+      font-size: 3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    small {
+      color: #94a3b8;
+      margin-top: 20px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Nealey Net Worth Clock</h1>
+  <div id="wealth">$1,250,000.00</div>
+  <small>Growing at $87,500 per year</small>
+
+  <script>
+    const startNetWorth = 1250000.00;
+    const annualGrowth = 87500.00;
+    const growthPerSecond = annualGrowth / (365 * 24 * 60 * 60);
+
+    const clockStart = new Date('2025-01-01T00:00:00'); // Start date
+
+    function updateWealth() {
+      const now = new Date();
+      const secondsElapsed = (now - clockStart) / 1000;
+      const currentWealth = startNetWorth + (secondsElapsed * growthPerSecond);
+      document.getElementById("wealth").textContent = "$" + currentWealth.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    setInterval(updateWealth, 100);
+  </script>
+</body>
+</html>
