@@ -27,9 +27,14 @@
       font-weight: bold;
       letter-spacing: 1px;
     }
+    #btc-price {
+      font-size: 2.5rem;
+      color: #fbbf24;
+      margin-top: 30px;
+    }
     small {
       color: #94a3b8;
-      margin-top: 20px;
+      margin-top: 10px;
       display: block;
     }
   </style>
@@ -39,11 +44,13 @@
   <div id="wealth">$1,250,000.00</div>
   <small>Growing at $87,500 per year</small>
 
+  <div id="btc-price">$--.--</div>
+  <small>Live Bitcoin Price (USD)</small>
+
   <script>
     const startNetWorth = 1250000.00;
     const annualGrowth = 87500.00;
     const growthPerSecond = annualGrowth / (365 * 24 * 60 * 60);
-
     const clockStart = new Date('2025-01-01T00:00:00'); // Start date
 
     function updateWealth() {
@@ -56,7 +63,24 @@
       });
     }
 
+    function fetchBitcoinPrice() {
+      fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd")
+        .then(response => response.json())
+        .then(data => {
+          const price = data.bitcoin.usd;
+          document.getElementById("btc-price").textContent = "$" + price.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+        })
+        .catch(err => {
+          console.error("Error fetching BTC price:", err);
+        });
+    }
+
     setInterval(updateWealth, 100);
+    fetchBitcoinPrice();
+    setInterval(fetchBitcoinPrice, 30000); // update every 30 seconds
   </script>
 </body>
 </html>
